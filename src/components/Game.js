@@ -10,8 +10,12 @@ import items from "../data";
 
 import { GameContext } from './GameContext';
 
+const useMountEffect = (func) => React.useEffect(func, [])
+
 const Game = () => {
   const {numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond} = React.useContext(GameContext);
+
+  const[userIsBack, setUserIsBack] = React.useState(false);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
@@ -38,6 +42,24 @@ const Game = () => {
       window.removeEventListener("keydown", handleKeydown);
     };
   });
+
+  React.useEffect(() => {
+    if(userIsBack) {
+      let elapsedTime = Math.round(new Date() / 1000);
+      localStorage.setItem('elapsedTime', elapsedTime);
+      }
+  });
+
+  useMountEffect(() => {
+    setUserIsBack(true)
+    let currentTime = Math.round(new Date() / 1000);
+    let elapsedTimeFromStorage = localStorage.getItem('elapsedTime');
+
+    if(elapsedTimeFromStorage) {
+      setNumCookies(numCookies + ((currentTime - Number(elapsedTimeFromStorage)) * calculateCookiesPerSecond(purchasedItems)));
+      console.log((currentTime - Number(elapsedTimeFromStorage)) * calculateCookiesPerSecond(purchasedItems));
+    }
+  })
 
   return (
     <Wrapper>
