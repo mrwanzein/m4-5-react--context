@@ -8,10 +8,10 @@ import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "../data";
 
-import { CookieCountContext } from "./App";
+import { GameContext } from './GameContext';
 
 const Game = () => {
-  const {numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond} = React.useContext(CookieCountContext);
+  const {numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond} = React.useContext(GameContext);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
